@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>花人-Hanato- | 教えるを仕事にする</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-ink: #1a1a1a;
+      --color-paper: #faf9f7;
+      --color-sakura: #e8b4b8;
+      --color-sakura-deep: #c4848a;
+      --color-gold: #b8a067;
+      --color-green: #7a9e7e;
+      --color-blue: #6b8e9f;
+      --color-warmgray: #8a8680;
+      --font-serif: 'Noto Serif JP', serif;
+      --font-sans: 'Zen Kaku Gothic New', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* ===== NAVIGATION ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 1rem 2rem;
+      background: rgba(250, 249, 247, 0.95);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    nav.scrolled {
+      padding: 0.75rem 2rem;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+    }
+
+    .logo {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--color-ink);
+      text-decoration: none;
+    }
+
+    .logo span {
+      font-size: 0.75rem;
+      color: var(--color-warmgray);
+      display: block;
+      letter-spacing: 0.2em;
+      font-family: var(--font-sans);
+      font-weight: 400;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--color-ink);
+      text-decoration: none;
+      font-size: 0.875rem;
+      letter-spacing: 0.05em;
+      position: relative;
+      padding-bottom: 4px;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--color-sakura-deep);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(ellipse at 20% 80%, rgba(232, 180, 184, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(184, 160, 103, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(122, 158, 126, 0.05) 0%, transparent 70%);
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+    }
+
+    .hero-tagline {
+      font-size: 0.875rem;
+      letter-spacing: 0.3em;
+      color: var(--color-warmgray);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeInUp 1s ease 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeInUp 1s ease 0.5s forwards;
+    }
+
+    .hero-title .accent {
+      color: var(--color-sakura-deep);
+      position: relative;
+      display: inline-block;
+    }
+
+    .hero-title .accent::after {
+      content: '';
+      position: absolute;
+      bottom: 0.1em;
+      left: 0;
+      right: 0;
+      height: 0.3em;
+      background: var(--color-sakura);
+      opacity: 0.4;
+      z-index: -1;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--color-warmgray);
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeInUp 1s ease 0.7s forwards;
+    }
+
+    .hero-cta {
+      opacity: 0;
+      animation: fadeInUp 1s ease 0.9s forwards;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 1rem 3rem;
+      background: var(--color-ink);
+      color: var(--color-paper);
+      text-decoration: none;
+      font-size: 0.875rem;
+      letter-spacing: 0.15em;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--color-sakura-deep);
+      transition: left 0.3s ease;
+      z-index: 0;
+    }
+
+    .btn-primary:hover::before {
+      left: 0;
+    }
+
+    .btn-primary span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--color-warmgray);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      opacity: 0;
+      animation: fadeIn 1s ease 1.5s forwards;
+    }
+
+    .scroll-indicator::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--color-warmgray), transparent);
+      animation: scrollPulse 2s ease infinite;
+    }
+
+    /* ===== PHILOSOPHY SECTION ===== */
+    .philosophy {
+      padding: 8rem 2rem;
+      background: var(--color-ink);
+      color: var(--color-paper);
+      text-align: center;
+    }
+
+    .philosophy-inner {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .philosophy-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      color: var(--color-sakura);
+      margin-bottom: 2rem;
+    }
+
+    .philosophy-text {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 4vw, 2.25rem);
+      line-height: 2;
+      font-weight: 400;
+    }
+
+    .philosophy-text .highlight {
+      color: var(--color-sakura);
+    }
+
+    /* ===== PATHS SECTION ===== */
+    .paths {
+      padding: 8rem 2rem;
+    }
+
+    .paths-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 5rem;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      color: var(--color-warmgray);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.75rem, 5vw, 2.5rem);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-desc {
+      color: var(--color-warmgray);
+      font-size: 1rem;
+    }
+
+    .paths-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .path-card {
+      background: white;
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .path-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--card-accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .path-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .path-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    }
+
+    .path-card.health { --card-accent: var(--color-sakura-deep); }
+    .path-card.info { --card-accent: var(--color-blue); }
+    .path-card.hope { --card-accent: var(--color-green); }
+    .path-card.create { --card-accent: var(--color-gold); }
+
+    .path-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .path-title {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--card-accent);
+    }
+
+    .path-subtitle {
+      font-size: 0.875rem;
+      color: var(--color-warmgray);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .path-desc {
+      color: var(--color-ink);
+      margin-bottom: 2rem;
+      font-size: 0.9375rem;
+    }
+
+    .path-points {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .path-points li {
+      padding: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+      font-size: 0.875rem;
+      color: var(--color-warmgray);
+    }
+
+    .path-points li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--card-accent);
+    }
+
+    .btn-outline {
+      display: inline-block;
+      padding: 0.875rem 2rem;
+      border: 1px solid var(--card-accent);
+      color: var(--card-accent);
+      text-decoration: none;
+      font-size: 0.8125rem;
+      letter-spacing: 0.1em;
+      transition: all 0.3s ease;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .btn-outline:hover {
+      background: var(--card-accent);
+      color: white;
+    }
+
+    /* ===== WHY SECTION ===== */
+    .why {
+      padding: 8rem 2rem;
+      background: linear-gradient(180deg, var(--color-paper) 0%, #f5f4f2 100%);
+    }
+
+    .why-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .why-header {
+      text-align: center;
+      margin-bottom: 5rem;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+    }
+
+    .why-item {
+      text-align: center;
+    }
+
+    .why-number {
+      font-family: var(--font-serif);
+      font-size: 3.5rem;
+      font-weight: 600;
+      color: var(--color-sakura);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .why-title {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .why-desc {
+      font-size: 0.9375rem;
+      color: var(--color-warmgray);
+    }
+
+    /* ===== VISION SECTION ===== */
+    .vision {
+      padding: 8rem 2rem;
+      background: var(--color-ink);
+      color: var(--color-paper);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .vision::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(ellipse at 30% 70%, rgba(232, 180, 184, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 30%, rgba(122, 158, 126, 0.08) 0%, transparent 50%);
+      z-index: 0;
+    }
+
+    .vision-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .vision-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .vision-header .section-label {
+      color: var(--color-sakura);
+    }
+
+    .vision-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .vision-text h3 {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--color-sakura);
+    }
+
+    .vision-text p {
+      margin-bottom: 1.5rem;
+      opacity: 0.9;
+    }
+
+    .vision-metaphor {
+      text-align: center;
+      padding: 3rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .vision-flower {
+      font-size: 4rem;
+      margin-bottom: 2rem;
+    }
+
+    .vision-parts {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .vision-part {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .vision-part-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .vision-part.root .vision-part-icon { background: rgba(122, 158, 126, 0.3); }
+    .vision-part.stem .vision-part-icon { background: rgba(232, 180, 184, 0.3); }
+    .vision-part.leaf .vision-part-icon { background: rgba(107, 142, 159, 0.3); }
+
+    .vision-part-text {
+      font-size: 0.9375rem;
+    }
+
+    .vision-part-label {
+      font-weight: 600;
+      color: var(--color-sakura);
+    }
+
+    /* ===== PROFILE SECTION ===== */
+    .profile {
+      padding: 8rem 2rem;
+    }
+
+    .profile-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .profile-image {
+      position: relative;
+    }
+
+    .profile-image::before {
+      content: '';
+      position: absolute;
+      top: -1rem;
+      left: -1rem;
+      right: 1rem;
+      bottom: 1rem;
+      border: 1px solid var(--color-sakura);
+      z-index: 0;
+    }
+
+    .profile-placeholder {
+      position: relative;
+      z-index: 1;
+      background: linear-gradient(135deg, var(--color-sakura) 0%, var(--color-sakura-deep) 100%);
+      aspect-ratio: 4/5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-family: var(--font-serif);
+      font-size: 3rem;
+    }
+
+    .profile-content .section-label {
+      margin-bottom: 1rem;
+    }
+
+    .profile-name {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .profile-name-en {
+      font-size: 0.875rem;
+      color: var(--color-warmgray);
+      letter-spacing: 0.1em;
+      margin-bottom: 2rem;
+    }
+
+    .profile-text {
+      margin-bottom: 1.5rem;
+    }
+
+    .profile-activities {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 2rem;
+    }
+
+    .activity-tag {
+      padding: 0.5rem 1rem;
+      background: var(--color-paper);
+      border: 1px solid rgba(0,0,0,0.1);
+      font-size: 0.8125rem;
+      color: var(--color-warmgray);
+    }
+
+    /* ===== CTA SECTION ===== */
+    .cta {
+      padding: 8rem 2rem;
+      background: linear-gradient(135deg, var(--color-sakura) 0%, var(--color-sakura-deep) 100%);
+      text-align: center;
+      color: white;
+    }
+
+    .cta-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .cta-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.75rem, 5vw, 2.5rem);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-desc {
+      font-size: 1.125rem;
+      margin-bottom: 3rem;
+      opacity: 0.95;
+    }
+
+    .btn-white {
+      display: inline-block;
+      padding: 1.25rem 3.5rem;
+      background: white;
+      color: var(--color-sakura-deep);
+      text-decoration: none;
+      font-size: 0.9375rem;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-white:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    /* ===== CONTACT SECTION ===== */
+    .contact {
+      padding: 8rem 2rem;
+      background: var(--color-ink);
+      color: var(--color-paper);
+    }
+
+    .contact-inner {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .contact-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .contact-header .section-label {
+      color: var(--color-sakura);
+    }
+
+    .contact-header .section-title {
+      color: var(--color-paper);
+    }
+
+    .form-group {
+      margin-bottom: 2rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8125rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+      color: var(--color-warmgray);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--color-paper);
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--color-sakura);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .form-group select option {
+      background: var(--color-ink);
+      color: var(--color-paper);
+    }
+
+    .form-group textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .form-submit {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    .btn-submit {
+      padding: 1.25rem 4rem;
+      background: var(--color-sakura-deep);
+      color: white;
+      border: none;
+      font-family: var(--font-sans);
+      font-size: 0.9375rem;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+      background: var(--color-sakura);
+      transform: translateY(-2px);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      padding: 4rem 2rem;
+      background: #0d0d0d;
+      color: var(--color-paper);
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 4rem;
+    }
+
+    .footer-brand .logo {
+      color: var(--color-paper);
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+
+    .footer-tagline {
+      font-size: 0.875rem;
+      color: var(--color-warmgray);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-address {
+      font-size: 0.8125rem;
+      color: var(--color-warmgray);
+      line-height: 2;
+    }
+
+    .footer-heading {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--color-sakura);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links a {
+      color: var(--color-warmgray);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--color-paper);
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 3rem;
+      margin-top: 3rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--color-warmgray);
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.5; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .nav-links {
+        display: none;
+      }
+
+      .why-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      .vision-content {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      .profile-inner {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        text-align: center;
+      }
+
+      .profile-image {
+        max-width: 300px;
+        margin: 0 auto;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .paths-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 8rem 1.5rem 4rem;
+      }
+
+      nav {
+        padding: 1rem 1.5rem;
+      }
+    }
+
+    /* ===== SCROLL ANIMATIONS ===== */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav id="navbar">
+    <a href="#" class="logo">
+      花人
+      <span>HANATO</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#paths">教えるを選ぶ</a></li>
+      <li><a href="#why">選ばれる理由</a></li>
+      <li><a href="#vision">ビジョン</a></li>
+      <li><a href="#profile">代表紹介</a></li>
+      <li><a href="#contact">お問い合わせ</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <p class="hero-tagline">BECOME A PLAYER, NOT A USER</p>
+      <h1 class="hero-title">
+        <span class="accent">教える</span>を<br>仕事にする
+      </h1>
+      <p class="hero-subtitle">
+        あなたの経験と想いが、誰かの人生を変える力になる。<br>
+        創造する側へ。伝える側へ。花を咲かせる側へ。
+      </p>
+      <div class="hero-cta">
+        <a href="#paths" class="btn-primary"><span>プレイヤーになる</span></a>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      SCROLL
+    </div>
+  </section>
+
+  <!-- Philosophy Section -->
+  <section class="philosophy">
+    <div class="philosophy-inner animate-on-scroll">
+      <p class="philosophy-label">PHILOSOPHY</p>
+      <p class="philosophy-text">
+        私たちは「<span class="highlight">詰まり</span>」を解消する。<br>
+        体の詰まり、情報の詰まり、心の詰まり。<br><br>
+        そして今、あなたにも<br>
+        <span class="highlight">解消する側</span>になってほしい。
+      </p>
+    </div>
+  </section>
+
+  <!-- Paths Section -->
+  <section class="paths" id="paths">
+    <div class="paths-header animate-on-scroll">
+      <span class="section-label">CHOOSE YOUR PATH</span>
+      <h2 class="section-title">あなたは、何を教えますか？</h2>
+      <p class="section-desc">
+        それぞれの道に、それぞれの可能性がある。<br>
+        あなたの「教えたい」を仕事にする4つの道。
+      </p>
+    </div>
+
+    <div class="paths-grid">
+      <!-- 健康を教える -->
+      <article class="path-card health animate-on-scroll">
+        <div class="path-icon">💓</div>
+        <h3 class="path-title">健康を教える</h3>
+        <p class="path-subtitle">TEACH HEALTH</p>
+        <p class="path-desc">
+          家庭用医療機器を通じて、血流改善と健康の大切さを伝える。体の詰まりを解消し、人々の健康をサポートする講師・代理店として活動します。
+        </p>
+        <ul class="path-points">
+          <li>血流改善の知識を学び、伝える</li>
+          <li>体験会の開催・運営</li>
+          <li>代理店として独立可能</li>
+        </ul>
+        <a href="#contact" class="btn-outline">詳しく聞く</a>
+      </article>
+
+      <!-- 情報を教える -->
+      <article class="path-card info animate-on-scroll">
+        <div class="path-icon">📱</div>
+        <h3 class="path-title">情報を教える</h3>
+        <p class="path-subtitle">TEACH CONNECTIVITY</p>
+        <p class="path-desc">
+          通信環境の最適化を通じて、人と情報のつながりをサポート。複雑化するデジタル社会で、最適な選択を導く専門家として活動します。
+        </p>
+        <ul class="path-points">
+          <li>通信プランの診断・提案</li>
+          <li>デジタル活用のアドバイス</li>
+          <li>代理店として収入を得る</li>
+        </ul>
+        <a href="#contact" class="btn-outline">詳しく聞く</a>
+      </article>
+
+      <!-- 希望を教える -->
+      <article class="path-card hope animate-on-scroll">
+        <div class="path-icon">🕊️</div>
+        <h3 class="path-title">希望を教える</h3>
+        <p class="path-subtitle">TEACH HOPE</p>
+        <p class="path-desc">
+          NPO活動を通じて、命のルーツと平和の大切さを伝える。心の詰まりを解消し、子どもたちの未来に希望を届ける活動に参加します。
+        </p>
+        <ul class="path-points">
+          <li>ボランティア活動への参加</li>
+          <li>教育プログラムの企画・運営</li>
+          <li>コミュニティの構築</li>
+        </ul>
+        <a href="#contact" class="btn-outline">詳しく聞く</a>
+      </article>
+
+      <!-- 創造を教える -->
+      <article class="path-card create animate-on-scroll">
+        <div class="path-icon">🎨</div>
+        <h3 class="path-title">創造を教える</h3>
+        <p class="path-subtitle">TEACH CREATIVITY</p>
+        <p class="path-desc">
+          LINEスタンプ制作などのクリエイティブスキルを教える。自分の「つくる力」を活かして、創造の喜びを伝える教室を開きます。
+        </p>
+        <ul class="path-points">
+          <li>LINEスタンプ教室の講師</li>
+          <li>クリエイティブワークショップ</li>
+          <li>自分の教室を持つ</li>
+        </ul>
+        <a href="#contact" class="btn-outline">詳しく聞く</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- Why Section -->
+  <section class="why" id="why">
+    <div class="why-inner">
+      <div class="why-header animate-on-scroll">
+        <span class="section-label">WHY HANATO</span>
+        <h2 class="section-title">花人が選ばれる理由</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-item animate-on-scroll">
+          <div class="why-number">01</div>
+          <h3 class="why-title">経験ゼロから始められる</h3>
+          <p class="why-desc">講師経験がなくても大丈夫。基礎から丁寧にサポートし、あなたのペースで成長できる環境を用意しています。</p>
+        </div>
+        <div class="why-item animate-on-scroll">
+          <div class="why-number">02</div>
+          <h3 class="why-title">本業・副業どちらも</h3>
+          <p class="why-desc">フルタイムでもスキマ時間でも。あなたのライフスタイルに合わせて、柔軟に活動できます。</p>
+        </div>
+        <div class="why-item animate-on-scroll">
+          <div class="why-number">03</div>
+          <h3 class="why-title">仲間と一緒に成長</h3>
+          <p class="why-desc">一人で頑張るのではなく、同じ志を持つ仲間と切磋琢磨。定期的な勉強会やイベントで繋がりを深めます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vision Section -->
+  <section class="vision" id="vision">
+    <div class="vision-inner">
+      <div class="vision-header animate-on-scroll">
+        <span class="section-label">VISION</span>
+        <h2 class="section-title">花を咲かせる人生へ</h2>
+      </div>
+      <div class="vision-content">
+        <div class="vision-text animate-on-scroll">
+          <h3>なぜ「花人」なのか</h3>
+          <p>
+            美しい花を咲かせるには、3つの要素が必要です。
+          </p>
+          <p>
+            「歴史」は根っこ。自分の命のルーツを知り、誇りを持つこと。<br>
+            「体」は茎。健康な体が、人生を支えます。<br>
+            「情報」は葉っぱ。経済的自由が、選択肢を広げます。
+          </p>
+          <p>
+            この3つが調和したとき、誰もが自分らしく輝く花を咲かせることができる。<br>
+            そして私たちは、その花を咲かせる「側」に立つ人を求めています。
+          </p>
+        </div>
+        <div class="vision-metaphor animate-on-scroll">
+          <div class="vision-flower">🌸</div>
+          <div class="vision-parts">
+            <div class="vision-part root">
+              <div class="vision-part-icon">🌱</div>
+              <div class="vision-part-text">
+                <span class="vision-part-label">根</span> = 歴史・ルーツ
+              </div>
+            </div>
+            <div class="vision-part stem">
+              <div class="vision-part-icon">💪</div>
+              <div class="vision-part-text">
+                <span class="vision-part-label">茎</span> = 健康な体
+              </div>
+            </div>
+            <div class="vision-part leaf">
+              <div class="vision-part-icon">🍃</div>
+              <div class="vision-part-text">
+                <span class="vision-part-label">葉</span> = 情報・経済力
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Profile Section -->
+  <section class="profile" id="profile">
+    <div class="profile-inner">
+      <div class="profile-image animate-on-scroll">
+        <div class="profile-placeholder">永田</div>
+      </div>
+      <div class="profile-content animate-on-scroll">
+        <span class="section-label">FOUNDER</span>
+        <h2 class="profile-name">永田 安孝</h2>
+        <p class="profile-name-en">YASUTAKA NAGATA</p>
+        <p class="profile-text">
+          家庭用医療機器代理店、通信事業代理店、NPO活動。一見バラバラに見える3つの取り組みですが、実は全て一つの想いで繋がっています。
+        </p>
+        <p class="profile-text">
+          それは「詰まりを解消する」こと。体の詰まり、情報の詰まり、心の詰まり。この3つを解消することで、人は本来の力を発揮できると考えています。
+        </p>
+        <p class="profile-text">
+          そして今、同じ想いを持つ仲間を探しています。「教える」ことで人の役に立ちたい。そんな方との出会いを心待ちにしています。
+        </p>
+        <div class="profile-activities">
+          <span class="activity-tag">家庭用医療機器代理店</span>
+          <span class="activity-tag">通信事業代理店</span>
+          <span class="activity-tag">NPO活動</span>
+          <span class="activity-tag">東アジアの平和</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="cta-inner animate-on-scroll">
+      <h2 class="cta-title">
+        あなたの「教えたい」が<br>
+        誰かの人生を変える
+      </h2>
+      <p class="cta-desc">
+        創造する側へ。伝える側へ。<br>
+        一緒に花を咲かせる仲間になりませんか。
+      </p>
+      <a href="#contact" class="btn-white">今すぐ相談する</a>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <div class="contact-inner">
+      <div class="contact-header animate-on-scroll">
+        <span class="section-label">CONTACT</span>
+        <h2 class="section-title">お問い合わせ</h2>
+        <p style="color: var(--color-warmgray); margin-top: 1rem;">
+          まずは気軽にお話しましょう。<br>
+          あなたに合った道を一緒に探します。
+        </p>
+      </div>
+
+      <form class="contact-form animate-on-scroll">
+        <div class="form-group">
+          <label>興味のある分野 *</label>
+          <select required>
+            <option value="">選択してください</option>
+            <option value="health">健康を教える（医療機器）</option>
+            <option value="info">情報を教える（通信環境）</option>
+            <option value="hope">希望を教える（NPO活動）</option>
+            <option value="create">創造を教える（LINEスタンプ等）</option>
+            <option value="all">全て興味がある</option>
+            <option value="other">その他・相談したい</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>お名前 *</label>
+          <input type="text" required placeholder="山田 太郎">
+        </div>
+
+        <div class="form-group">
+          <label>メールアドレス *</label>
+          <input type="email" required placeholder="example@email.com">
+        </div>
+
+        <div class="form-group">
+          <label>電話番号</label>
+          <input type="tel" placeholder="090-0000-0000">
+        </div>
+
+        <div class="form-group">
+          <label>メッセージ</label>
+          <textarea placeholder="ご質問やご要望があればお書きください"></textarea>
+        </div>
+
+        <div class="form-submit">
+          <button type="submit" class="btn-submit">送信する</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          花人
+          <span>HANATO</span>
+        </a>
+        <p class="footer-tagline">教えるを仕事にする</p>
+        <address class="footer-address">
+          〒166-0015<br>
+          東京都杉並区成田東1丁目40-12<br>
+          代表：永田安孝
+        </address>
+      </div>
+      <div class="footer-nav">
+        <h4 class="footer-heading">NAVIGATION</h4>
+        <ul class="footer-links">
+          <li><a href="#paths">教えるを選ぶ</a></li>
+          <li><a href="#why">選ばれる理由</a></li>
+          <li><a href="#vision">ビジョン</a></li>
+          <li><a href="#profile">代表紹介</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4 class="footer-heading">CONTACT</h4>
+        <ul class="footer-links">
+          <li><a href="#contact">お問い合わせ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 花人-Hanato-. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, index * 100);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Form submission (placeholder)
+    document.querySelector('.contact-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('お問い合わせありがとうございます。\n内容を確認の上、ご連絡いたします。');
+    });
+  </script>
+
+</body>
+</html>
