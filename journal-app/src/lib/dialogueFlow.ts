@@ -8,7 +8,7 @@ import {
   SpiritualBattle,
   ClosingPrayer,
 } from '@/types';
-import { chatCompletion } from './openai';
+import { chatCompletion } from './gemini';
 import {
   SYSTEM_PROMPT,
   buildOrganizePrompt,

@@ -530,6 +530,134 @@ body {
   margin-top: 4px;
 }
 
+/* 録音ボタン */
+.record-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 24px auto;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.record-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--sakura);
+  position: relative;
+  transition: all 0.3s;
+  box-shadow: 0 4px 20px rgba(232, 180, 184, 0.4);
+}
+
+.record-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 40px;
+  border-radius: 14px;
+  background: white;
+}
+
+.record-btn:hover .record-icon {
+  transform: scale(1.06);
+  box-shadow: 0 6px 28px rgba(232, 180, 184, 0.6);
+}
+
+.record-label {
+  font-size: 0.85rem;
+  color: var(--gray-500);
+}
+
+/* 録音中インジケーター */
+.recording-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  color: var(--gray-600);
+  font-size: 0.85rem;
+}
+
+.recording-pulse {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ef4444;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.3);
+  }
+}
+
+/* リアルタイム文字起こし表示 */
+.live-transcript {
+  background: var(--gray-50);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--gray-600);
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 12px;
+}
+
+/* テキスト編集エリア */
+.transcript-editor {
+  width: 100%;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  font-size: 0.88rem;
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  resize: vertical;
+  background: var(--gray-50);
+  color: var(--ink);
+  min-height: 160px;
+  transition: border-color 0.2s;
+}
+
+.transcript-editor:focus {
+  outline: none;
+  border-color: var(--sakura);
+  background: white;
+}
+
+/* 区切りテキスト（「または」） */
+.divider-text {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+  color: var(--gray-400);
+  font-size: 0.78rem;
+}
+
+.divider-text::before,
+.divider-text::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gray-200);
+}
+
 /* レスポンシブ */
 @media (max-width: 640px) {
   .main-content {
@@ -543,5 +671,16 @@ body {
 
   .message-bubble {
     padding: 14px 16px;
+  }
+
+  .record-icon {
+    width: 70px;
+    height: 70px;
+  }
+
+  .record-icon::after {
+    width: 24px;
+    height: 34px;
+    border-radius: 12px;
   }
 }
