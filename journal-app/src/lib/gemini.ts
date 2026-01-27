@@ -1,6 +1,6 @@
 /**
  * Gemini REST API を直接呼び出す（SDKを使わない）
- * v1beta でダメなら v1 を試す。モデルも複数試す。
+ * v1 を優先し、systemInstruction はメッセージに埋め込む。
  */
 
 const MODELS = [
@@ -9,7 +9,7 @@ const MODELS = [
   'gemini-pro',
 ];
 
-const API_VERSIONS = ['v1beta', 'v1'];
+const API_VERSIONS = ['v1', 'v1beta'];
 
 export async function chatCompletion(
   systemPrompt: string,
@@ -25,22 +25,15 @@ export async function chatCompletion(
   const envModel = process.env.GEMINI_MODEL;
   const modelsToTry = envModel ? [envModel, ...MODELS.filter(m => m !== envModel)] : MODELS;
 
-  // Gemini 形式に変換
-  const contents = messages.map((m) => ({
+  // システムプロンプトを最初のユーザーメッセージに埋め込む
+  const contentsWithSystem = messages.map((m, i) => ({
     role: m.role === 'assistant' ? 'model' : 'user',
-    parts: [{ text: m.content }],
+    parts: [{
+      text: i === 0 && m.role !== 'assistant'
+        ? `【あなたの役割】\n${systemPrompt}\n\n【ユーザーの入力】\n${m.content}`
+        : m.content,
+    }],
   }));
-
-  const body = JSON.stringify({
-    contents,
-    systemInstruction: {
-      parts: [{ text: systemPrompt }],
-    },
-    generationConfig: {
-      temperature: 0.8,
-      maxOutputTokens: 2000,
-    },
-  });
 
   // 全組み合わせを試す
   const errors: string[] = [];
@@ -49,11 +42,19 @@ export async function chatCompletion(
     for (const model of modelsToTry) {
       const url = `https://generativelanguage.googleapis.com/${version}/models/${model}:generateContent?key=${apiKey}`;
 
+      const payload: Record<string, unknown> = {
+        contents: contentsWithSystem,
+        generationConfig: {
+          temperature: 0.8,
+          maxOutputTokens: 2000,
+        },
+      };
+
       try {
         const response = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body,
+          body: JSON.stringify(payload),
         });
 
         if (response.ok) {
@@ -65,10 +66,10 @@ export async function chatCompletion(
           }
         }
 
-        const errData = await response.json().catch(() => ({}));
-        const errMsg = `${version}/${model}: ${response.status} ${JSON.stringify(errData?.error?.message || '').slice(0, 100)}`;
+        const errText = await response.text().catch(() => '');
+        const errMsg = `${version}/${model}: ${response.status} ${errText.slice(0, 120)}`;
         errors.push(errMsg);
-        console.log(`Gemini failed: ${errMsg}`);
+        console.log(`Gemini skip: ${errMsg}`);
       } catch (e) {
         const errMsg = `${version}/${model}: ${e instanceof Error ? e.message : String(e)}`;
         errors.push(errMsg);
