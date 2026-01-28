@@ -1,9 +1,11 @@
-export default {
+import { defineType, defineArrayMember } from "sanity";
+
+export default defineType({
   title: "ブロックコンテンツ",
   name: "blockContent",
   type: "array",
   of: [
-    {
+    defineArrayMember({
       title: "Block",
       type: "block",
       styles: [
@@ -41,8 +43,8 @@ export default {
           },
         ],
       },
-    },
-    {
+    }),
+    defineArrayMember({
       type: "image",
       options: { hotspot: true },
       fields: [
@@ -57,10 +59,6 @@ export default {
           title: "キャプション",
         },
       ],
-    },
-    {
-      type: "code",
-      title: "コードブロック",
-    },
+    }),
   ],
-};
+});

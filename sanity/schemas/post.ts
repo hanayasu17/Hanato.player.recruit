@@ -1,15 +1,17 @@
-export default {
+import { defineType, defineField } from "sanity";
+
+export default defineType({
   name: "post",
   title: "ブログ記事",
   type: "document",
   fields: [
-    {
+    defineField({
       name: "title",
       title: "タイトル",
       type: "string",
-      validation: (Rule: { required: () => unknown }) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "slug",
       title: "スラッグ",
       type: "slug",
@@ -17,15 +19,15 @@ export default {
         source: "title",
         maxLength: 96,
       },
-      validation: (Rule: { required: () => unknown }) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "author",
       title: "著者",
       type: "reference",
       to: [{ type: "author" }],
-    },
-    {
+    }),
+    defineField({
       name: "mainImage",
       title: "メイン画像",
       type: "image",
@@ -33,44 +35,43 @@ export default {
         hotspot: true,
       },
       fields: [
-        {
+        defineField({
           name: "alt",
           type: "string",
           title: "代替テキスト",
-        },
+        }),
       ],
-    },
-    {
+    }),
+    defineField({
       name: "categories",
       title: "カテゴリー",
       type: "array",
       of: [{ type: "reference", to: [{ type: "category" }] }],
-    },
-    {
+    }),
+    defineField({
       name: "tags",
       title: "タグ",
       type: "array",
       of: [{ type: "reference", to: [{ type: "tag" }] }],
-    },
-    {
+    }),
+    defineField({
       name: "publishedAt",
       title: "公開日",
       type: "datetime",
-      validation: (Rule: { required: () => unknown }) => Rule.required(),
-    },
-    {
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "excerpt",
       title: "抜粋",
       type: "text",
       rows: 3,
-      validation: (Rule: { required: () => { max: (n: number) => unknown } }) =>
-        Rule.required().max(200),
-    },
-    {
+      validation: (Rule) => Rule.required().max(200),
+    }),
+    defineField({
       name: "body",
       title: "本文",
       type: "blockContent",
-    },
+    }),
   ],
   preview: {
     select: {
@@ -78,7 +79,7 @@ export default {
       author: "author.name",
       media: "mainImage",
     },
-    prepare(selection: { title: string; author: string; media: unknown }) {
+    prepare(selection) {
       const { author } = selection;
       return {
         ...selection,
@@ -86,4 +87,4 @@ export default {
       };
     },
   },
-};
+});
